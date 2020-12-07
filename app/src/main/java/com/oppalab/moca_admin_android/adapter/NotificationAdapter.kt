@@ -24,6 +24,7 @@ import com.oppalab.moca.util.PreferenceManager
 import com.oppalab.moca.util.RetrofitConnection
 import com.oppalab.moca_admin_android.R
 import com.oppalab.moca_admin_android.dto.NotificationsDTO
+import com.oppalab.moca_admin_android.dto.PostDTO
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_review.*
 import retrofit2.Call
@@ -183,27 +184,9 @@ class NotificationAdapter (
 
                 mPost.add(response.body()!!.content[0])
 
-//                intentPostDetail.putExtra("publisherId", mPost[0].nickname)
-//                intentPostDetail.putExtra("thumbnailImageFilePath", mPost[0].thumbnailImageFilePath)
-//                intentPostDetail.putExtra("content", mPost[0].postBody)
-//                intentPostDetail.putExtra("likeCount", mPost[0].likeCount.toString())
-//                intentPostDetail.putExtra("commentCount", mPost[0].commentCount.toString())
-//                intentPostDetail.putExtra("like", mPost[0].like)
                 intentPostDetail.putExtra("postId", mPost[0].postId.toString())
-//                intentPostDetail.putExtra("subject", mPost[0].postTitle)
-//                intentPostDetail.putExtra("postUserId",mPost[0].userId.toString())
-//                intentPostDetail.putExtra("reviewId",mPost[0].reviewId.toString())
-//                intentPostDetail.putExtra("likeTag", if (mPost[0].like) "Liked" else "Like")
-//                intentPostDetail.putExtra("createdAt", mPost[0].createdAt.toString())
-//                var categoryString = ""
-//                for (category in mPost[0].categories) {
-//                    if (category == "") continue
-//                    categoryString += category
-//                    categoryString += ", "
-//                }
-//                intentPostDetail.putExtra("categories",categoryString.substring(0, categoryString.length-2))
 
-                mContext.startActivity(intentPostDetail)
+                mContext.startActivityㅎ(intentPostDetail)
             }
 
             override fun onFailure(call: Call<GetMyPostDTO>, t: Throwable) {
@@ -212,18 +195,5 @@ class NotificationAdapter (
         })
     }
 
-    private fun moveToReview(userId: String, reviewId: String, postId: Long)
-    {
-        val intentReview = Intent(mContext, ReviewActivity::class.java)
-        intentReview.putExtra("userId",userId)
-        intentReview.putExtra("postId",postId)
-        intentReview.putExtra("reviewId",reviewId)
-        mContext.startActivity(intentReview)
-    }
 
-    private fun moveToProfile(userId: Long) {
-        val intentProfile = Intent(mContext, OtherUserActivity::class.java)
-        intentProfile.putExtra("publisherId",userId.toString())
-        mContext.startActivity(intentProfile)
-    }
 }
