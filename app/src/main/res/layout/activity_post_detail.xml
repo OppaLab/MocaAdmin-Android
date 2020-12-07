@@ -75,6 +75,7 @@
                     android:textSize="12sp" />
 
 
+
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -128,7 +129,15 @@
                 android:textColor="@color/colorBlack"
                 android:lineSpacingExtra="5dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/post_detail_recycler_view_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/post_text"
+                android:layout_margin="5dp">
 
+
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
     </ScrollView>

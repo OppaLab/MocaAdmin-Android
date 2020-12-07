@@ -28,10 +28,6 @@ class ReviewActivity : AppCompatActivity() {
     private var postId = ""
     private var userId = ""
     private var reviewId = ""
-    private var likeCount = 0L
-    private var like = false
-    private var likeTag = ""
-    private var commentCount = 0L
     private var commentAdapter: CommentsAdapterRetro? = null
     private var commentList: MutableList<CommentsOnPost>? = null
     private var postTitle = ""
@@ -191,7 +187,6 @@ class ReviewActivity : AppCompatActivity() {
         RetrofitConnection.server.getReview(userId = userId, reviewId = reviewId).enqueue(object:
             Callback<GetReviewDTO> {
             override fun onResponse(call: Call<GetReviewDTO>, response: Response<GetReviewDTO>) {
-
             }
 
             override fun onFailure(call: Call<GetReviewDTO>, t: Throwable) {

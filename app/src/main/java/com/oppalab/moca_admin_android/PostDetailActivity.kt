@@ -8,9 +8,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.oppalab.moca.dto.GetMyPostDTO
 import com.oppalab.moca.util.PreferenceManager
 import com.oppalab.moca.util.RetrofitConnection
+import com.oppalab.moca_admin_android.adapter.CommentsAdapterRetro
+import com.oppalab.moca_admin_android.dto.CommentsOnPost
 import com.oppalab.moca_admin_android.dto.PostDTO
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_post_detail.*
@@ -28,6 +31,9 @@ class PostDetailActivity : AppCompatActivity() {
     private var subject = ""
     private var createdAt = 0L
     private var categories = ""
+    private var commentCount = 0L
+    private var commentAdapter: CommentsAdapterRetro? = null
+    private var commentList: MutableList<CommentsOnPost>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +98,14 @@ class PostDetailActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+
+        var comment_linearLayoutManager = LinearLayoutManager(this)
+        comment_linearLayoutManager.reverseLayout = true
+        post_detail_recycler_view_comments.layoutManager = comment_linearLayoutManager
+
+        commentList = ArrayList()
+        commentAdapter = CommentsAdapterRetro(this, commentList)
+        post_detail_recycler_view_comments.adapter = commentAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
