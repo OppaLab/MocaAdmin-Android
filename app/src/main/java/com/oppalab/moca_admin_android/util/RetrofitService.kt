@@ -1,6 +1,8 @@
 package com.oppalab.moca.util
 
+import GetCommentsOnPostDTO
 import com.oppalab.moca.dto.*
+import com.oppalab.moca_admin_android.dto.GetReviewDTO
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -61,5 +63,26 @@ interface RetrofitService {
         @Query("userId") userId: Long,
         @Query("page") page: Long
     ): Call<GetNotificationsDTO>
+
+    @DELETE("/comment")
+    fun deleteComment(
+        @Query ("commentId") commentId: Long,
+        @Query ("userId") userId: Long
+    ): Call<Long>
+
+    @GET("/review")
+    fun getReview(
+        @Query ("userId") userId: String,
+        @Query ("reviewId") reviewId: String
+    ): Call<GetReviewDTO>
+
+
+    @GET("/comment")
+    fun getCommentOnPost(
+        @Query("postId") postId: String,
+        @Query("reviewId") reviewId: String,
+        @Query("page") page: Long
+    ): Call<GetCommentsOnPostDTO>
+
 
 }

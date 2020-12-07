@@ -1,9 +1,10 @@
 package com.oppalab.moca_admin_android
 
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,14 +25,13 @@ class MainActivity : AppCompatActivity() {
     private var curPage: Long = 0L
     private var currentUser: Long = 0L
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
-        val view = inflater.inflate(R.layout.activity_main, this , false)
-
-        var recyclerView: RecyclerView
-        recyclerView = view.findViewById(R.id.notification_recycler_view)
+        var recyclerView: RecyclerView = findViewById(R.id.notification_recycler_view)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = LinearLayoutManager(applicationContext)
 
@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         readNotifications()
-
     }
 
     private fun readNotifications() {
@@ -125,4 +124,6 @@ class MainActivity : AppCompatActivity() {
                 }
             })
     }
+
+
 }

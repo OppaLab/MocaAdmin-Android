@@ -12,25 +12,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.oppalab.moca.OtherUserActivity
-import com.oppalab.moca.PostDetailActivity
-import com.oppalab.moca.R
-import com.oppalab.moca.ReviewActivity
-import com.oppalab.moca.dto.GetMyPostDTO
-import com.oppalab.moca.dto.GetReviewDTO
-import com.oppalab.moca.dto.NotificationsDTO
-import com.oppalab.moca.dto.PostDTO
-import com.oppalab.moca.util.PreferenceManager
-import com.oppalab.moca.util.RetrofitConnection
+import com.oppalab.moca_admin_android.PostDetailActivity
 import com.oppalab.moca_admin_android.R
+import com.oppalab.moca_admin_android.ReviewActivity
+import com.oppalab.moca.dto.GetMyPostDTO
+import com.oppalab.moca_admin_android.dto.GetReviewDTO
 import com.oppalab.moca_admin_android.dto.NotificationsDTO
 import com.oppalab.moca_admin_android.dto.PostDTO
+import com.oppalab.moca.util.PreferenceManager
+import com.oppalab.moca.util.RetrofitConnection
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_review.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
 
 class NotificationAdapter (
@@ -108,15 +102,6 @@ class NotificationAdapter (
                 }
             }
         }
-        else if(notification.activity == "follow")
-        {
-            holder.username.text= notification.nickname
-            holder.text.text="당신을 팔로우합니다. "
-            holder.textTime.text = createdAtToText
-            holder.text.setOnClickListener{
-                moveToProfile(notification.userId)
-            }
-        }
         else if(notification.activity == "comment")
         {
             holder.username.text= notification.nickname
@@ -186,13 +171,22 @@ class NotificationAdapter (
 
                 intentPostDetail.putExtra("postId", mPost[0].postId.toString())
 
-                mContext.startActivityㅎ(intentPostDetail)
+                mContext.startActivity(intentPostDetail)
             }
 
             override fun onFailure(call: Call<GetMyPostDTO>, t: Throwable) {
                 Log.d("moveToPost", t.message.toString())
             }
         })
+    }
+
+    private fun moveToReview(userId: String, reviewId: String, postId: Long)
+    {
+        val intentReview = Intent(mContext, ReviewActivity::class.java)
+        intentReview.putExtra("userId",userId)
+        intentReview.putExtra("postId",postId)
+        intentReview.putExtra("reviewId",reviewId)
+        mContext.startActivity(intentReview)
     }
 
 
