@@ -3,6 +3,7 @@ package com.oppalab.moca_admin_android.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -119,8 +120,7 @@ class ReportAdapter(
         val intentPostDetail = Intent(mContext, PostDetailActivity::class.java)
         intentPostDetail.putExtra("postId", postId)
         intentPostDetail.putExtra("postUserId", userId)
-        mContext.startActivity(intentPostDetail)
-
+        mContext.startActivity(intentPostDetail.addFlags(FLAG_ACTIVITY_NEW_TASK))
     }
 
     private fun moveToReview(userId: String, reviewId: String, postId: Long)
@@ -129,8 +129,6 @@ class ReportAdapter(
         intentReview.putExtra("userId",userId)
         intentReview.putExtra("postId",postId)
         intentReview.putExtra("reviewId",reviewId)
-        mContext.startActivity(intentReview)
+        mContext.startActivity(intentReview.addFlags(FLAG_ACTIVITY_NEW_TASK))
     }
-
-
 }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.oppalab.moca_admin_android.adapter.CommentsAdapterRetro
@@ -24,7 +25,6 @@ import retrofit2.Response
 
 class ReviewActivity : AppCompatActivity() {
 
-    private var currentUser = 0L
     private var postId = ""
     private var userId = ""
     private var reviewId = ""
@@ -40,7 +40,6 @@ class ReviewActivity : AppCompatActivity() {
 
 
         val intent = intent
-        currentUser = PreferenceManager.getLong(applicationContext, "userId")
         postId = intent.getStringExtra("postId")!!
         userId = intent.getStringExtra("userId")!!
         reviewId = intent.getStringExtra("reviewId")!!
@@ -143,43 +142,33 @@ class ReviewActivity : AppCompatActivity() {
             }
         }
 
-    }
+        review_delete_btn.setOnClickListener {
+            RetrofitConnection.server.deleteReview(userId = userId.toLong(), reviewId = reviewId.toLong()).enqueue(object : Callback<Long>{
+                override fun onResponse(call: Call<Long>, response: Response<Long>) {
+                    Log.d("retrofit", "review 삭제 : review_id = " + response.body())
+                    val intent = Intent(this@ReviewActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menu.clear()
-            menuInflater.inflate(R.menu.appbar_action, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_delete -> {
-                Log.d("retrofit", "review 삭제버튼 동작 = ")
-                RetrofitConnection.server.deleteReview(userId = currentUser, reviewId = reviewId.toLong()).enqueue(object : Callback<Long>{
-                    override fun onResponse(call: Call<Long>, response: Response<Long>) {
-                        Log.d("retrofit", "review 삭제 : review_id = " + response.body())
-                        val intent = Intent(this@ReviewActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-
-                    }
-                    override fun onFailure(call: Call<Long>, t: Throwable) {
-                        Log.d("retrofit", "review 삭제 실패 :  " + t.message.toString())
-                    }
-                })
-                return true
-            }
-            R.id.action_ben -> {
-                Log.d("retrofit", "유저 계정 삭제 ")
-                val mainIntent = Intent (this, MainActivity::class.java)
-                startActivity(mainIntent)
-                finish()
-                return true
-            }
+                }
+                override fun onFailure(call: Call<Long>, t: Throwable) {
+                    Log.d("retrofit", "review 삭제 실패 :  " + t.message.toString())
+                }
+            })
         }
-        return super.onOptionsItemSelected(item)
+        review_user_delete_btn.setOnClickListener {
+            RetrofitConnection.server.deleteAccountByAdmin(userId = userId.toLong()).enqueue(object :  Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Toast.makeText(this@ReviewActivity,"계정이 삭제되었습니다.", Toast.LENGTH_LONG).show()
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@ReviewActivity,"계정 삭제 실패.", Toast.LENGTH_LONG).show()
+                }
+            })
+        }
     }
+
 
     override fun onResume() {
         super.onResume()

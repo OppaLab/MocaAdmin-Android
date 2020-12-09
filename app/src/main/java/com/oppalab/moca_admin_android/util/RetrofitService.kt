@@ -1,7 +1,6 @@
 package com.oppalab.moca.util
 
 import GetCommentsOnPostDTO
-import com.oppalab.moca.dto.*
 import com.oppalab.moca_admin_android.dto.GetMyPostDTO
 import com.oppalab.moca_admin_android.dto.GetReportDTO
 import com.oppalab.moca_admin_android.dto.GetReviewDTO
@@ -12,18 +11,11 @@ interface RetrofitService {
 
     //user
 
-    @FormUrlEncoded
-    @POST("/signin")
-    fun signIn(
-        @Field("email") email: String
-    ): Call<Long>
 
-
-    @DELETE("/signout/{userId}")
-    fun signOut(
-        @Path("userId") userId: Long
-    ): Call<Long>
-
+    @DELETE("/deleteAccountByAdmin")
+    fun deleteAccountByAdmin(
+        @Query("userId") userId: Long
+    ): Call<Void>
 
     //post
 

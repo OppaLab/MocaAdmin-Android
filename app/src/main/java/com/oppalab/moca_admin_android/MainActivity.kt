@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        var recyclerView: RecyclerView = findViewById(R.id.report_recycler_view)
+        val recyclerView: RecyclerView = findViewById(R.id.report_recycler_view)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = LinearLayoutManager(applicationContext)
 

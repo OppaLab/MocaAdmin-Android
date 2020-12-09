@@ -104,7 +104,6 @@
                 android:id="@+id/post_detail_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/post_thumbnail_detail"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp">
 

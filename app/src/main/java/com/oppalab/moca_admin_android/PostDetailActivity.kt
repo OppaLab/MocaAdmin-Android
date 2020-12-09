@@ -18,10 +18,11 @@ import kotlinx.android.synthetic.main.activity_post_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 
 class PostDetailActivity : AppCompatActivity() {
     private var postId = 0L
-    private var postUserId = ""
+    private var postUserId = 0L
     private var reviewId = ""
     private var publisherId = ""
     private var content = ""
@@ -43,16 +44,16 @@ class PostDetailActivity : AppCompatActivity() {
 
         val intent = intent
 
-        postId = intent.getStringExtra("postId")!!.toLong()
-        postUserId = intent.getStringExtra("postUserId")!!
+        postId = intent.getLongExtra("postId",0L)
+        postUserId = intent.getLongExtra("postUserId", 0L)
+
         RetrofitConnection.server.getOnePost(
-            userId = postUserId.toLong(),
+            userId = postUserId,
             postId = postId,search = "", category = "", page = 0).enqueue(object:
             Callback<GetMyPostDTO> {
             override fun onResponse(call: Call<GetMyPostDTO>, response: Response<GetMyPostDTO>) {
                 val mPost = response.body()!!.content[0]
 
-                postUserId = mPost.userId.toString()
                 publisherId = mPost.nickname
                 reviewId = mPost!!.reviewId.toString()
                 subject = mPost.postTitle
@@ -106,13 +107,22 @@ class PostDetailActivity : AppCompatActivity() {
         post_detail_recycler_view_comments.adapter = commentAdapter
 
         user_delete_btn.setOnClickListener {
+            RetrofitConnection.server.deleteAccountByAdmin(userId = postUserId.toLong()).enqueue(object :  Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Toast.makeText(this@PostDetailActivity,"계정이 삭제되었습니다.", Toast.LENGTH_LONG).show()
+                }
 
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@PostDetailActivity,"계정 삭제 실패.", Toast.LENGTH_LONG).show()
+                }
+
+            })
         }
         post_delete_btn.setOnClickListener {
             RetrofitConnection.server.deletePost(postId = postId, userId = postUserId.toLong()).enqueue(object : Callback<Long>{
                 override fun onResponse(call: Call<Long>, response: Response<Long>) {
                     Log.d("retrofit", "post 삭제 : post_id = " + response.body())
-                    Toast.makeText(this@PostDetailActivity,"게시글이 삭제되었습니다.", Toast.LENGTH_LONG)
+                    Toast.makeText(this@PostDetailActivity,"고민글이 삭제되었습니다.", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@PostDetailActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
