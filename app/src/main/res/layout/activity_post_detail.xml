@@ -107,6 +107,22 @@
                 android:layout_below="@+id/post_thumbnail_detail"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/user_delete_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/post_delete_btn"
+                    android:background="@color/colorMocaRed"
+                    android:text="계정삭제" />
+
+                <Button
+                    android:id="@+id/post_delete_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorMocaYellow"
+                    android:text="글 삭제" />
             </RelativeLayout>
 
             <TextView
@@ -138,6 +154,7 @@
 
 
             </androidx.recyclerview.widget.RecyclerView>
+
         </LinearLayout>
 
     </ScrollView>

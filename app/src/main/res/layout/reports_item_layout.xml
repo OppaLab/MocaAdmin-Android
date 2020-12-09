@@ -6,15 +6,15 @@
     android:layout_margin="6dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/notification_profile_image"
+        android:id="@+id/report_profile_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/profile">
     </de.hdodenhof.circleimageview.CircleImageView>
 
     <LinearLayout
-        android:layout_toEndOf="@id/notification_profile_image"
-        android:layout_toStartOf="@+id/notification_post_thumnail"
+        android:layout_toEndOf="@id/report_profile_image"
+        android:layout_toStartOf="@+id/report_post_thumbnail"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_marginStart="5dp"
@@ -23,7 +23,7 @@
 
 
         <TextView
-            android:id="@+id/username_notification"
+            android:id="@+id/username_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -39,7 +39,7 @@
 
 
             <TextView
-                android:id="@+id/content_notification"
+                android:id="@+id/content_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
@@ -47,7 +47,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/time_notification"
+                android:id="@+id/time_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
@@ -60,7 +60,7 @@
 
 
     <ImageView
-        android:id="@+id/notification_post_thumnail"
+        android:id="@+id/report_post_thumbnail"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentEnd="true">

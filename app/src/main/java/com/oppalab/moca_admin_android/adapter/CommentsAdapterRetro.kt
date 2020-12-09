@@ -14,8 +14,8 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.oppalab.moca.R
-import com.oppalab.moca.dto.CommentsOnPost
+import com.oppalab.moca_admin_android.R
+import com.oppalab.moca_admin_android.dto.CommentsOnPost
 import com.oppalab.moca.util.PreferenceManager
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*

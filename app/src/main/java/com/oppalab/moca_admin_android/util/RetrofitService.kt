@@ -2,8 +2,9 @@ package com.oppalab.moca.util
 
 import GetCommentsOnPostDTO
 import com.oppalab.moca.dto.*
+import com.oppalab.moca_admin_android.dto.GetMyPostDTO
+import com.oppalab.moca_admin_android.dto.GetReportDTO
 import com.oppalab.moca_admin_android.dto.GetReviewDTO
-import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -58,11 +59,10 @@ interface RetrofitService {
 
 
     //notifications
-    @GET("/activity")
-    fun getNotifications(
-        @Query("userId") userId: Long,
+    @GET("/report")
+    fun getReport(
         @Query("page") page: Long
-    ): Call<GetNotificationsDTO>
+    ): Call<GetReportDTO>
 
     @DELETE("/comment")
     fun deleteComment(

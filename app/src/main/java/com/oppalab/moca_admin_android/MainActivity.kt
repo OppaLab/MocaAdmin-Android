@@ -7,10 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.oppalab.moca.dto.GetNotificationsDTO
+import com.oppalab.moca_admin_android.dto.GetReportDTO
 import com.oppalab.moca.util.RetrofitConnection
-import com.oppalab.moca_admin_android.adapter.NotificationAdapter
-import com.oppalab.moca_admin_android.dto.NotificationsDTO
+import com.oppalab.moca_admin_android.adapter.ReportAdapter
+import com.oppalab.moca_admin_android.dto.ReportDTO
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,8 +18,8 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private var notificationList : MutableList<NotificationsDTO>? = null
-    private var notificationAdapter: NotificationAdapter? = null
+    private var reportList : MutableList<ReportDTO>? = null
+    private var reportAdapter: ReportAdapter? = null
     private var curPage: Long = 0L
     private var currentUser: Long = 0L
 
@@ -29,16 +29,16 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        var recyclerView: RecyclerView = findViewById(R.id.notification_recycler_view)
+        var recyclerView: RecyclerView = findViewById(R.id.report_recycler_view)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = LinearLayoutManager(applicationContext)
 
 
-        notificationList = ArrayList()
+        reportList = ArrayList()
 
 
-        notificationAdapter = applicationContext?.let { NotificationAdapter(it, notificationList as ArrayList<NotificationsDTO>) }
-        recyclerView.adapter = notificationAdapter
+        reportAdapter = applicationContext?.let { ReportAdapter(it, reportList as ArrayList<ReportDTO>) }
+        recyclerView.adapter = reportAdapter
         recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -46,36 +46,35 @@ class MainActivity : AppCompatActivity() {
                 val itemTotalCount = recyclerView.adapter!!.itemCount -1
                 if (lastVisibleItemPosition == itemTotalCount) {
                     curPage += 1
-                    notification_progress_bar.visibility = View.VISIBLE
-                    readNotificationsMore()
+                    report_progress_bar.visibility = View.VISIBLE
+                    readReportsMore()
                 }
             }
         })
 
-        readNotifications()
+        readReports()
     }
 
-    private fun readNotifications() {
+    private fun readReports() {
 
-        RetrofitConnection.server.getNotifications(
-            userId = currentUser,
+        RetrofitConnection.server.getReport(
             page = curPage
         ).enqueue(
-            object : Callback<GetNotificationsDTO> {
+            object : Callback<GetReportDTO> {
                 override fun onResponse(
-                    call: Call<GetNotificationsDTO>,
-                    response: Response<GetNotificationsDTO>
+                        call: Call<GetReportDTO>,
+                        response: Response<GetReportDTO>
                 ) {
                     Log.d("Notifications", response.body().toString())
 
-                    notificationList?.clear()
+                    reportList?.clear()
 
                     for (notification in response.body()!!.content) {
-                        val curNotification = notification
-                        if(curNotification.userId.toString() != currentUser.toString()) {
-                            notificationList!!.add(curNotification)
+                        val curReport = notification
+                        if(curReport.userId.toString() != currentUser.toString()) {
+                            reportList!!.add(curReport)
                         }
-                        notificationAdapter!!.notifyDataSetChanged()
+                        reportAdapter!!.notifyDataSetChanged()
                     }
 
                     if (response.body()!!.last == true) {
@@ -84,31 +83,30 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                override fun onFailure(call: Call<GetNotificationsDTO>, t: Throwable) {
+                override fun onFailure(call: Call<GetReportDTO>, t: Throwable) {
                     Log.d("retrofit", t.message.toString())
                 }
             })
     }
 
-    private fun readNotificationsMore() {
+    private fun readReportsMore() {
 
-        RetrofitConnection.server.getNotifications(
-            userId = currentUser,
+        RetrofitConnection.server.getReport(
             page = curPage
         ).enqueue(
-            object : Callback<GetNotificationsDTO> {
+            object : Callback<GetReportDTO> {
                 override fun onResponse(
-                    call: Call<GetNotificationsDTO>,
-                    response: Response<GetNotificationsDTO>
+                        call: Call<GetReportDTO>,
+                        response: Response<GetReportDTO>
                 ) {
                     Log.d("Notifications", response.body().toString())
 
-                    for (notification in response.body()!!.content) {
-                        val curNotification = notification
-                        if(curNotification.userId.toString() != currentUser.toString()) {
-                            notificationList!!.add(curNotification)
+                    for (report in response.body()!!.content) {
+                        val curReport = report
+                        if(curReport.userId.toString() != currentUser.toString()) {
+                            reportList!!.add(curReport)
                         }
-                        notificationAdapter!!.notifyDataSetChanged()
+                        reportAdapter!!.notifyDataSetChanged()
                     }
 
                     if (response.body()!!.last == true) {
@@ -117,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                override fun onFailure(call: Call<GetNotificationsDTO>, t: Throwable) {
+                override fun onFailure(call: Call<GetReportDTO>, t: Throwable) {
                     Log.d("retrofit", t.message.toString())
                 }
             })

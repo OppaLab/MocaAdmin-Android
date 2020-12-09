@@ -1,7 +1,6 @@
 package com.oppalab.moca_admin_android
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.oppalab.moca.dto.GetMyPostDTO
-import com.oppalab.moca.util.PreferenceManager
+import com.oppalab.moca_admin_android.dto.GetMyPostDTO
 import com.oppalab.moca.util.RetrofitConnection
 import com.oppalab.moca_admin_android.adapter.CommentsAdapterRetro
 import com.oppalab.moca_admin_android.dto.CommentsOnPost
@@ -46,7 +44,7 @@ class PostDetailActivity : AppCompatActivity() {
         val intent = intent
 
         postId = intent.getStringExtra("postId")!!.toLong()
-
+        postUserId = intent.getStringExtra("postUserId")!!
         RetrofitConnection.server.getOnePost(
             userId = postUserId.toLong(),
             postId = postId,search = "", category = "", page = 0).enqueue(object:
@@ -106,41 +104,25 @@ class PostDetailActivity : AppCompatActivity() {
         commentList = ArrayList()
         commentAdapter = CommentsAdapterRetro(this, commentList)
         post_detail_recycler_view_comments.adapter = commentAdapter
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menu.clear()
-           menuInflater.inflate(R.menu.appbar_action, menu)
-        return true
-    }
+        user_delete_btn.setOnClickListener {
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-
-            R.id.action_delete -> {
-                Log.d("retrofit", "유저 벤 시작")
-                RetrofitConnection.server.deletePost(postId = postId, userId = postUserId.toLong()).enqueue(object : Callback<Long>{
-                    override fun onResponse(call: Call<Long>, response: Response<Long>) {
-                        Log.d("retrofit", "post 삭제 : post_id = " + response.body())
-                        Toast.makeText(this@PostDetailActivity,"게시글이 삭제되었습니다.", Toast.LENGTH_LONG)
-                        val intent = Intent(this@PostDetailActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                    override fun onFailure(call: Call<Long>, t: Throwable) {
-                        Log.d("retrofit", "post 삭제 실패 :  " + t.message.toString())
-                    }
-                })
-                return true
-            }
-            R.id.action_ben -> {
-                return true
-            }
         }
-        return super.onOptionsItemSelected(item)
+        post_delete_btn.setOnClickListener {
+            RetrofitConnection.server.deletePost(postId = postId, userId = postUserId.toLong()).enqueue(object : Callback<Long>{
+                override fun onResponse(call: Call<Long>, response: Response<Long>) {
+                    Log.d("retrofit", "post 삭제 : post_id = " + response.body())
+                    Toast.makeText(this@PostDetailActivity,"게시글이 삭제되었습니다.", Toast.LENGTH_LONG)
+                    val intent = Intent(this@PostDetailActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                override fun onFailure(call: Call<Long>, t: Throwable) {
+                    Log.d("retrofit", "post 삭제 실패 :  " + t.message.toString())
+                }
+            })
+        }
     }
-
-
 
     override fun onResume() {
         super.onResume()
