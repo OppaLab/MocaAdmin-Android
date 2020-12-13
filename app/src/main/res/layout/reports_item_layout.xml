@@ -53,16 +53,15 @@
                 android:textSize="12dp"
                 android:textColor="@color/colorMocaRed">
             </TextView>
-
-
         </LinearLayout>
+        <TextView
+            android:layout_marginStart="5dp"
+            android:id="@+id/reason_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorBlack">
+        </TextView>
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/report_post_thumbnail"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentEnd="true">
-    </ImageView>
 </RelativeLayout>

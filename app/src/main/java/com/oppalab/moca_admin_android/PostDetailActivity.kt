@@ -1,13 +1,17 @@
 package com.oppalab.moca_admin_android
 
+import GetCommentsOnPostDTO
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.oppalab.moca_admin_android.dto.GetMyPostDTO
 import com.oppalab.moca.util.RetrofitConnection
 import com.oppalab.moca_admin_android.adapter.CommentsAdapterRetro
@@ -30,7 +34,8 @@ class PostDetailActivity : AppCompatActivity() {
     private var subject = ""
     private var createdAt = 0L
     private var categories = ""
-    private var commentCount = 0L
+    private var commentId = 0L
+    private var flag = false
     private var commentAdapter: CommentsAdapterRetro? = null
     private var commentList: MutableList<CommentsOnPost>? = null
 
@@ -46,6 +51,9 @@ class PostDetailActivity : AppCompatActivity() {
 
         postId = intent.getLongExtra("postId",0L)
         postUserId = intent.getLongExtra("postUserId", 0L)
+        flag = intent.getBooleanExtra("flag", false)
+        if(flag) { commentId = intent.getLongExtra("commentId", 0L)}
+        Log.d("Flag", flag.toString() + "|||||" + commentId.toString())
 
         RetrofitConnection.server.getOnePost(
             userId = postUserId,
@@ -119,7 +127,7 @@ class PostDetailActivity : AppCompatActivity() {
             })
         }
         post_delete_btn.setOnClickListener {
-            RetrofitConnection.server.deletePost(postId = postId, userId = postUserId.toLong()).enqueue(object : Callback<Long>{
+            RetrofitConnection.server.deletePost(postId = postId).enqueue(object : Callback<Long>{
                 override fun onResponse(call: Call<Long>, response: Response<Long>) {
                     Log.d("retrofit", "post 삭제 : post_id = " + response.body())
                     Toast.makeText(this@PostDetailActivity,"고민글이 삭제되었습니다.", Toast.LENGTH_LONG).show()
@@ -132,6 +140,67 @@ class PostDetailActivity : AppCompatActivity() {
                 }
             })
         }
+
+        RetrofitConnection.server.getCommentOnPost(postId = postId.toString(), reviewId = "", page = 0).enqueue(object: Callback<GetCommentsOnPostDTO> {
+            override fun onResponse(
+                    call: Call<GetCommentsOnPostDTO>,
+                    response: Response<GetCommentsOnPostDTO>
+            ) {
+                Log.d("retrofit", response.body().toString())
+
+                commentList!!.clear()
+                for (comment in response.body()!!.content) {
+                    if(commentId == comment.commentId){
+                        commentList!!.add(comment!!)
+                    }
+
+                }
+
+                commentAdapter!!.notifyDataSetChanged()
+                post_detail_comments_count.text = response.body()!!.content.size.toString() + "개의 댓글이 있습니다."
+            }
+
+            override fun onFailure(call: Call<GetCommentsOnPostDTO>, t: Throwable) {
+                Log.d("retrofit", t.message.toString())
+            }
+
+        })
+
+        val swipe = object: CommentsAdapterRetro.SwipeHelper(this, post_detail_recycler_view_comments, 200) {
+            override fun instantiateDeleteButton(
+                    viewHolder: RecyclerView.ViewHolder,
+                    buffer: MutableList<DeleteButton>
+            ) {
+                buffer.add(
+                        DeleteButton(this@PostDetailActivity, "Delete", 30, 0,
+                                Color.parseColor("#FF3C30"),
+                                object:CommentsAdapterRetro.CommentClickListener{
+                                    override fun onClick(pos: Int) {
+                                            RetrofitConnection.server.deleteComment(
+                                                    commentId = commentList!![pos].commentId,
+                                            ).enqueue(object : Callback<Long> {
+                                                override fun onResponse(
+                                                        call: Call<Long>,
+                                                        response: Response<Long>
+                                                ) {
+                                                    Log.d(
+                                                            "retrofit",
+                                                            "Comment 삭제 : comment_id = " + response.body()
+                                                    )
+                                                    commentAdapter!!.notifyDataSetChanged()
+                                                    finish()
+                                                    startActivity(intent)
+                                                }
+
+                                                override fun onFailure(call: Call<Long>, t: Throwable) {
+                                                    Log.d("retrofit", "Comment 삭제 실패" + t.message.toString())
+                                                }
+                                            })
+                                    }
+                                })
+                )
+            }
+        }
     }
 
     override fun onResume() {
@@ -140,10 +209,8 @@ class PostDetailActivity : AppCompatActivity() {
         RetrofitConnection.server.getOnePost(userId = postUserId.toLong(), postId = postId ,search = "", category = "", page = 0).enqueue(object:
             Callback<GetMyPostDTO> {
             override fun onResponse(call: Call<GetMyPostDTO>, response: Response<GetMyPostDTO>) {
-
                 val mPost : MutableList<PostDTO> = ArrayList()
                 mPost.add(response.body()!!.content[0])
-
             }
 
             override fun onFailure(call: Call<GetMyPostDTO>, t: Throwable) {

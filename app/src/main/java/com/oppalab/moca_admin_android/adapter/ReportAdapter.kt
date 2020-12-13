@@ -16,6 +16,7 @@ import com.oppalab.moca_admin_android.R
 import com.oppalab.moca_admin_android.ReviewActivity
 import com.oppalab.moca_admin_android.dto.ReportDTO
 import de.hdodenhof.circleimageview.CircleImageView
+import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
 class ReportAdapter(
@@ -26,6 +27,7 @@ class ReportAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(mContext).inflate(R.layout.reports_item_layout, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -33,6 +35,7 @@ class ReportAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val report = mReport[position]
 
+        holder.reason.text = "신고사유:  " + report.reportReason
         val createdAt = report.createdAt
         var createdAtToText = ""
         if (createdAt <= 60){
@@ -48,9 +51,6 @@ class ReportAdapter(
         }
 
 
-
-        //썸네일을 넣을것인지 않넣을것인지 안정해서 일단 없앰
-        holder.postThumbnail.visibility= View.GONE
         holder.profileImage.setImageResource(R.drawable.profile)
         if(report.reportWhat == "post")
         {
@@ -59,7 +59,7 @@ class ReportAdapter(
             holder.textTime.text = createdAtToText
 
             holder.text.setOnClickListener {
-                moveToPost(report.reportedUserId, report.postId)
+                moveToPost(report.reportedUserId, report.postId, 0L)
             }
         }
         else if(report.reportWhat == "review")
@@ -69,7 +69,7 @@ class ReportAdapter(
             holder.textTime.text = createdAtToText
 
             holder.text.setOnClickListener {
-                moveToReview(report.reportedUserId.toString(), report.reviewId.toString(), report.postId)
+                moveToReview(report.reportedUserId.toString(), report.reviewId.toString(), report.postId, 0L)
             }
         }
         else
@@ -77,16 +77,16 @@ class ReportAdapter(
             holder.username.text= report.userNickName
             holder.text.text= report.reportedUserNickName + "님의 댓글을 신고했습니다."
             holder.textTime.text = createdAtToText
-            if(report.postId == 0L)
+            if(report.reviewId == 0L)
             {
                 holder.text.setOnClickListener {
-                    moveToPost(report.userId, report.postId)
+                    moveToPost(report.userId, report.postId, report.commentId)
                 }
             }
             else
             {
                 holder.text.setOnClickListener {
-                    moveToReview(report.reportedUserId.toString(), report.reviewId.toString(), report.postId)
+                    moveToReview(report.reportedUserId.toString(), report.reviewId.toString(), report.postId, report.commentId)
                 }
             }
 
@@ -100,35 +100,50 @@ class ReportAdapter(
 
     inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView)
     {
-        var postThumbnail: ImageView
         var profileImage: CircleImageView
         var username: TextView
         var text: TextView
         var textTime: TextView
+        var reason : TextView
 
         init{
-            postThumbnail = itemView.findViewById(R.id.report_post_thumbnail)
             profileImage = itemView.findViewById(R.id.report_profile_image)
             username = itemView.findViewById(R.id.username_report)
             text = itemView.findViewById(R.id.content_report)
             textTime = itemView.findViewById(R.id.time_report)
+            reason = itemView.findViewById(R.id.reason_report)
         }
     }
 
-    private fun moveToPost(userId: Long, postId : Long)
+    private fun moveToPost(userId: Long, postId : Long, commentId: Long)
     {
         val intentPostDetail = Intent(mContext, PostDetailActivity::class.java)
-        intentPostDetail.putExtra("postId", postId)
+        if(commentId != 0L) {
+            intentPostDetail.putExtra("commentId", commentId)
+            intentPostDetail.putExtra("flag",true)
+        }
+        else {
+            intentPostDetail.putExtra("flag", false)
+        }
+            intentPostDetail.putExtra("postId", postId)
         intentPostDetail.putExtra("postUserId", userId)
         mContext.startActivity(intentPostDetail.addFlags(FLAG_ACTIVITY_NEW_TASK))
     }
 
-    private fun moveToReview(userId: String, reviewId: String, postId: Long)
+    private fun moveToReview(userId: String, reviewId: String, postId: Long, commentId : Long)
     {
         val intentReview = Intent(mContext, ReviewActivity::class.java)
+        if(commentId != 0L) {
+            intentReview.putExtra("commentId", commentId)
+            intentReview.putExtra("flag",true)
+        }
+        else {
+            intentReview.putExtra("flag", false)
+        }
         intentReview.putExtra("userId",userId)
         intentReview.putExtra("postId",postId)
         intentReview.putExtra("reviewId",reviewId)
+        intentReview.putExtra("flag",false)
         mContext.startActivity(intentReview.addFlags(FLAG_ACTIVITY_NEW_TASK))
     }
 }

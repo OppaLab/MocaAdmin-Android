@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.oppalab.moca_admin_android.dto.GetReportDTO
 import com.oppalab.moca.util.RetrofitConnection
 import com.oppalab.moca_admin_android.adapter.ReportAdapter
+import com.oppalab.moca_admin_android.dto.GetMyPostDTO
+import com.oppalab.moca_admin_android.dto.PostDTO
 import com.oppalab.moca_admin_android.dto.ReportDTO
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -21,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private var reportList : MutableList<ReportDTO>? = null
     private var reportAdapter: ReportAdapter? = null
     private var curPage: Long = 0L
-    private var currentUser: Long = 0L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.report_recycler_view)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = LinearLayoutManager(applicationContext)
-
 
         reportList = ArrayList()
 
@@ -71,9 +71,7 @@ class MainActivity : AppCompatActivity() {
 
                     for (notification in response.body()!!.content) {
                         val curReport = notification
-                        if(curReport.userId.toString() != currentUser.toString()) {
-                            reportList!!.add(curReport)
-                        }
+                        reportList!!.add(curReport)
                         reportAdapter!!.notifyDataSetChanged()
                     }
 
@@ -103,9 +101,7 @@ class MainActivity : AppCompatActivity() {
 
                     for (report in response.body()!!.content) {
                         val curReport = report
-                        if(curReport.userId.toString() != currentUser.toString()) {
                             reportList!!.add(curReport)
-                        }
                         reportAdapter!!.notifyDataSetChanged()
                     }
 
@@ -120,4 +116,8 @@ class MainActivity : AppCompatActivity() {
                 }
             })
     }
+
 }
+
+
+

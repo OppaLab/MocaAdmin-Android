@@ -38,10 +38,6 @@
             android:text="댓글내용"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="@color/colorBlack"/>
+            android:textColor="@color/colorMocaRed"/>
     </LinearLayout>
-
-
-
-
 </androidx.cardview.widget.CardView>

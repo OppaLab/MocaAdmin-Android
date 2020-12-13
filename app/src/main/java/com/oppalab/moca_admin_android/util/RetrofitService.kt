@@ -29,26 +29,15 @@ interface RetrofitService {
     ): Call<GetMyPostDTO>
 
 
-    @DELETE("/review")
+    @DELETE("/deleteReviewByAdmin")
     fun deleteReview(
-        @Query("reviewId") reviewId: Long,
-        @Query("userId") userId: Long
+        @Query("reviewId") reviewId: Long
     ): Call<Long>
 
-    @DELETE("/post")
+    @DELETE("/deletePostByAdmin")
     fun deletePost(
-        @Query("postId") postId: Long,
-        @Query("userId") userId: Long
+        @Query("postId") postId: Long
     ): Call<Long>
-
-    @FormUrlEncoded
-    @POST("/review")
-    fun createReview(
-        @Field ("postId") postId : Long,
-        @Field ("userId") userId : Long,
-        @Field ("review") review : String
-    ): Call<Long>
-
 
     //notifications
     @GET("/report")
@@ -56,10 +45,9 @@ interface RetrofitService {
         @Query("page") page: Long
     ): Call<GetReportDTO>
 
-    @DELETE("/comment")
+    @DELETE("/deleteCommentByAdmin")
     fun deleteComment(
-        @Query ("commentId") commentId: Long,
-        @Query ("userId") userId: Long
+        @Query ("commentId") commentId: Long
     ): Call<Long>
 
     @GET("/review")

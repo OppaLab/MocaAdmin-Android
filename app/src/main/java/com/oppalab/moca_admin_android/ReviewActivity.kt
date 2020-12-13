@@ -16,6 +16,8 @@ import com.oppalab.moca_admin_android.dto.CommentsOnPost
 import com.oppalab.moca_admin_android.dto.GetReviewDTO
 import com.oppalab.moca.util.PreferenceManager
 import com.oppalab.moca.util.RetrofitConnection
+import com.oppalab.moca_admin_android.dto.GetMyPostDTO
+import com.oppalab.moca_admin_android.dto.PostDTO
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_post_detail.*
 import kotlinx.android.synthetic.main.activity_review.*
@@ -25,13 +27,14 @@ import retrofit2.Response
 
 class ReviewActivity : AppCompatActivity() {
 
-    private var postId = ""
+
     private var userId = ""
     private var reviewId = ""
+    private var commentId = 0L
     private var commentAdapter: CommentsAdapterRetro? = null
     private var commentList: MutableList<CommentsOnPost>? = null
-    private var postTitle = ""
-    private var thumbNailImageFilePath = ""
+    private var flag = false
+    private var postId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,17 +43,25 @@ class ReviewActivity : AppCompatActivity() {
 
 
         val intent = intent
-        postId = intent.getStringExtra("postId")!!
         userId = intent.getStringExtra("userId")!!
         reviewId = intent.getStringExtra("reviewId")!!
-        postTitle = intent.getStringExtra("postTitle")!!
-        thumbNailImageFilePath = intent.getStringExtra("thumbNailImageFilePath")!!
+        postId = intent.getLongExtra("postId", 0L)
+        flag = intent.getBooleanExtra("flag", false)
+        if(flag) { commentId = intent.getLongExtra("commentId", 0L)}
 
-        review_detail_subject.text = postTitle
 
-        Picasso.get().load(RetrofitConnection.URL + "/image/thumbnail/" + thumbNailImageFilePath)
-            .into(review_thumbnail_detail)
+        RetrofitConnection.server.getOnePost(userId = userId.toLong(), postId = postId ,search = "", category = "", page = 0).enqueue(object:
+                Callback<GetMyPostDTO> {
+            override fun onResponse(call: Call<GetMyPostDTO>, response: Response<GetMyPostDTO>) {
+                review_detail_subject.text = response.body()!!.content[0].postTitle
+                Picasso.get().load(RetrofitConnection.URL + "/image/thumbnail/" + response.body()!!.content[0].thumbnailImageFilePath)
+                        .into(review_thumbnail_detail)
+            }
 
+            override fun onFailure(call: Call<GetMyPostDTO>, t: Throwable) {
+                Log.d("moveToPost", t.message.toString())
+            }
+        })
 
         var comment_linearLayoutManager = LinearLayoutManager(this)
         comment_linearLayoutManager.reverseLayout = true
@@ -90,8 +101,9 @@ class ReviewActivity : AppCompatActivity() {
 
                 commentList!!.clear()
                 for (comment in response.body()!!.content) {
-                    val curComment = comment
-                    commentList!!.add(curComment!!)
+                    if(commentId == comment.commentId){
+                        commentList!!.add(comment!!)
+                    }
                 }
 
                 commentAdapter!!.notifyDataSetChanged()
@@ -116,8 +128,7 @@ class ReviewActivity : AppCompatActivity() {
                         object:CommentsAdapterRetro.CommentClickListener{
                             override fun onClick(pos: Int) {
                                     RetrofitConnection.server.deleteComment(
-                                        commentId = commentList!![pos].commentId,
-                                        userId = commentList!![pos].userId
+                                        commentId = commentList!![pos].commentId
                                     ).enqueue(object : Callback<Long> {
                                         override fun onResponse(
                                             call: Call<Long>,
@@ -143,7 +154,7 @@ class ReviewActivity : AppCompatActivity() {
         }
 
         review_delete_btn.setOnClickListener {
-            RetrofitConnection.server.deleteReview(userId = userId.toLong(), reviewId = reviewId.toLong()).enqueue(object : Callback<Long>{
+            RetrofitConnection.server.deleteReview(reviewId = reviewId.toLong()).enqueue(object : Callback<Long>{
                 override fun onResponse(call: Call<Long>, response: Response<Long>) {
                     Log.d("retrofit", "review 삭제 : review_id = " + response.body())
                     val intent = Intent(this@ReviewActivity, MainActivity::class.java)
