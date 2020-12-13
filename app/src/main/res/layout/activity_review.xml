@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReviewActivity"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/review_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@android:color/white">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/review_detail_subject"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="제목"
+                    android:textSize="18sp"
+                    android:maxLines="1"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"/>
+
+
+                <TextView
+                    android:layout_below="@id/review_detail_subject"
+                    android:id="@+id/review_publisher"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="작성자"
+                    android:layout_marginTop="6dp"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:textColor="@android:color/black"/>
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/review_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/app_bar_layout_review">
+
+        <ImageView
+            android:id="@+id/review_thumbnail_detail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/profile" />
+
+        <Button
+            android:layout_below="@+id/review_thumbnail_detail"
+            android:layout_marginTop="10dp"
+            android:id="@+id/review_user_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/review_delete_btn"
+            android:background="@color/colorMocaRed"
+            android:text="계정삭제" />
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/review_thumbnail_detail"
+            android:id="@+id/review_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorMocaYellow"
+            android:text="후기 삭제" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/review_comments_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/review_menu"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text=""
+        android:textColor="@color/colorMocaRed"
+        android:layout_marginLeft="10dp"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/review_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/review_comments_count"
+        android:textColor="@color/colorBlack"
+        android:lineSpacingExtra="5dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/review_recycler_view_comments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/review_text"
+        android:layout_margin="5dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f79787</color>
+    <color name="colorPrimaryDark">#f79787</color>
+    <color name="colorAccent">#f79787</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlue">#5552ff</color>
+    <color name="colorMocaMain">#ffcead</color>
+    <color name="colorMocaRed">#f79787</color>
+    <color name="colorMocaYellow">#FDEA69</color>
+    <color name="colorMocaBuff">#F3E8C8</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+
+
+</resources>
