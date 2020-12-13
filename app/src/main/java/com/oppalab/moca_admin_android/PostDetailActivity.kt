@@ -52,7 +52,9 @@ class PostDetailActivity : AppCompatActivity() {
         postId = intent.getLongExtra("postId",0L)
         postUserId = intent.getLongExtra("postUserId", 0L)
         flag = intent.getBooleanExtra("flag", false)
-        if(flag) { commentId = intent.getLongExtra("commentId", 0L)}
+        if(flag) {
+            commentId = intent.getLongExtra("commentId", 0L)
+        }
         Log.d("Flag", flag.toString() + "|||||" + commentId.toString())
 
         RetrofitConnection.server.getOnePost(

@@ -33,6 +33,14 @@
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
                     android:layout_centerVertical="true"/>
+
+                <Button
+                    android:id="@+id/recycle_report_btn"
+                    android:layout_width="100dp"
+                    android:layout_marginLeft="280dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorMocaYellow"
+                    android:text="새로고침" />
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -56,4 +64,5 @@
             android:layout_height="wrap_content"
             android:id="@+id/report_progress_bar"/>
     </LinearLayout>
+
 </RelativeLayout>

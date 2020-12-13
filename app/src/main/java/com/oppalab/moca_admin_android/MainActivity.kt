@@ -53,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         readReports()
+
+        recycle_report_btn.setOnClickListener {
+            finish()
+            startActivity(intent)
+        }
     }
 
     private fun readReports() {
