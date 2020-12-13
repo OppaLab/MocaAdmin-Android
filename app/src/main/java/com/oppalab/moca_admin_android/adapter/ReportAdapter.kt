@@ -27,14 +27,12 @@ class ReportAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(mContext).inflate(R.layout.reports_item_layout, parent, false)
-
         return ViewHolder(view)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val report = mReport[position]
-
         holder.reason.text = "신고사유:  " + report.reportReason
         val createdAt = report.createdAt
         var createdAtToText = ""
