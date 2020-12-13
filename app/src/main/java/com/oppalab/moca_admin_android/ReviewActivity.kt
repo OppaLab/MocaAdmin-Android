@@ -123,7 +123,7 @@ class ReviewActivity : AppCompatActivity() {
                 buffer: MutableList<DeleteButton>
             ) {
                 buffer.add(
-                    DeleteButton(this@ReviewActivity, "Delete", 30, 0,
+                    DeleteButton(this@ReviewActivity, "삭제", 30, 0,
                         Color.parseColor("#FF3C30"),
                         object:CommentsAdapterRetro.CommentClickListener{
                             override fun onClick(pos: Int) {

@@ -74,18 +74,18 @@
             android:layout_below="@+id/review_thumbnail_detail"
             android:layout_marginTop="10dp"
             android:id="@+id/review_user_delete_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/review_delete_btn"
             android:background="@color/colorMocaRed"
-            android:text="계정삭제" />
+            android:text="계정 삭제" />
 
         <Button
             android:layout_marginTop="10dp"
             android:layout_below="@+id/review_thumbnail_detail"
             android:id="@+id/review_delete_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:background="@color/colorMocaYellow"
             android:text="후기 삭제" />

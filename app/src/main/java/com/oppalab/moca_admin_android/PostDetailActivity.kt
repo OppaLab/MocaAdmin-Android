@@ -172,7 +172,7 @@ class PostDetailActivity : AppCompatActivity() {
                     buffer: MutableList<DeleteButton>
             ) {
                 buffer.add(
-                        DeleteButton(this@PostDetailActivity, "Delete", 30, 0,
+                        DeleteButton(this@PostDetailActivity, "삭제", 30, 0,
                                 Color.parseColor("#FF3C30"),
                                 object:CommentsAdapterRetro.CommentClickListener{
                                     override fun onClick(pos: Int) {

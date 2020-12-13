@@ -86,7 +86,8 @@
         android:id="@+id/post_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_bar_layout_detail">
+        android:layout_below="@id/app_bar_layout_detail"
+        android:layout_marginTop="-2dp">
 
         <LinearLayout
             android:id="@+id/post_detail_post_layout"
@@ -109,19 +110,19 @@
 
                 <Button
                     android:id="@+id/user_delete_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="190dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_toEndOf="@+id/post_delete_btn"
                     android:background="@color/colorMocaRed"
-                    android:text="계정삭제" />
+                    android:text="계정 삭제" />
 
                 <Button
                     android:id="@+id/post_delete_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="190dp"
                     android:layout_height="match_parent"
                     android:background="@color/colorMocaYellow"
-                    android:text="글 삭제" />
+                    android:text="고민글 삭제" />
             </RelativeLayout>
 
             <TextView
@@ -129,11 +130,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/post_text"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text=""
                 android:textColor="@color/colorMocaRed"
-                android:layout_marginLeft="10dp"
                 android:textSize="16dp" />
 
             <TextView
@@ -141,8 +142,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/post_detail_menu"
-                android:textColor="@color/colorBlack"
-                android:lineSpacingExtra="5dp"/>
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/colorBlack" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/post_detail_recycler_view_comments"
